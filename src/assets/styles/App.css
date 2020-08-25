@@ -1,0 +1,14 @@
+body {
+  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.container {
+  border: 1px solid gray;
+  height: 100%;
+}
