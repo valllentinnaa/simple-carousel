@@ -1,9 +1,10 @@
 import React from "react";
 
-const CarouselItem = (props) => {
+const CarouselItem = ({children, className, width}) => {
+    console.log(width);
     return (
-        <div className={`item ${props.className ? props.className : ''}`}>
-            {props.children}
+        <div style={{width: `${width}px`}} className={`item ${className ? className : ''}`}>
+            {children}
         </div>
 
     )

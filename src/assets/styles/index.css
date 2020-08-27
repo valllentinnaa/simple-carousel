@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.test-container-1 {
+  width: 500px;
+  border: 1px dot-dash purple;
+  margin-bottom: 3rem;
+}
+
+.test-container-2 {
+  width: 1000px;
+}
+
+.red {
+  color: red;
+  padding: 0 3rem;
+}
+
+.rounded {
+  border-radius: 60px;
+  background-color: transparent;
+  border: 1px solid mediumvioletred;
+  margin: 1rem;
+}
+
+.carousel-test-class {
+  padding: 0 2rem;
+}
