@@ -18,11 +18,31 @@ const Container = () => {
             num: '3'
         },
         {
-            name: 'mest',
+            name: 'jest',
             num: '4'
         },
         {
             name: 'test',
+            num: '5'
+        },
+        {
+            name: 'test',
+            num: '1'
+        },
+        {
+            name: 'mest',
+            num: '2'
+        },
+        {
+            name: 'test',
+            num: '3'
+        },
+        {
+            name: 'mest',
+            num: '4'
+        },
+        {
+            name: 'lest',
             num: '5'
         },
     ];
@@ -45,17 +65,19 @@ const Container = () => {
             <div className="test-container-1">
                 <Carousel
                     id="test-container-1"
-                    itemWidth='300'
+                    itemWidth={200}
                     items={payload}
+                    activeItem="jest"
                 />
             </div>
             <div className="test-container-2">
                 <Carousel
                     id="test-container-1"
-                    itemWidth='200'
+                    itemWidth={200}
                     items={payload1}
                     arrowClass='rounded'
                     itemsContainerClass='carousel-test-class'
+                    activeItem="lest"
                 />
             </div>
         </>

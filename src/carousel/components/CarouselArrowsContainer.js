@@ -10,6 +10,7 @@ const CarouselArrowsContainer = ({
                                      counter,
                                      availableScrollTimes
                                  }) => {
+
     const increase = () => {
         return counter++;
     };
@@ -36,8 +37,7 @@ const CarouselArrowsContainer = ({
                 id={id}
                 clickHandler={clickHandler}
                 counter={increase}
-                // TODO explanation why there is + 1
-                disabled={counter + 1 === availableScrollTimes}
+                disabled={counter === availableScrollTimes}
             >
                 {nextArrowContent}
             </CarouselArrow>

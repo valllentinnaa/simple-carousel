@@ -6,22 +6,40 @@ import CarouselArrowsContainer from "./components/CarouselArrowsContainer";
 
 const Carousel = ({
                       id = 'Test',
-                      itemWidth = '',
+                      itemWidth = 0,
                       carouselClass = '',
                       arrowClass = '',
                       arrows = true,
                       carouselItemClass = '',
-                      items
+                      items,
+                      activeItem
                   }) => {
-    console.log(items);
+
     const carouselSlideId = `carousel-slide-${id}`;
+
     const carouselSlideRef = useRef(null);
     const carouselItemsRef = useRef(null);
+    const activeItemRef = useRef(null);
 
-    const {carouselState, carouselHandlers} = useCarousel(carouselSlideId, id, carouselSlideRef, carouselItemsRef, itemWidth);
+    const {carouselState, carouselHandlers} = useCarousel(
+        carouselSlideId,
+        id,
+        carouselSlideRef,
+        carouselItemsRef,
+        itemWidth,
+        activeItemRef
+    );
 
-    const renderCarouselItems = () => items ? items.map((item) => <CarouselItem width={itemWidth}
-                                                                                className={carouselItemClass}>{item}</CarouselItem>) : null;
+    const renderCarouselItems = () => {
+        return items ?
+            items.map((item, i) => <CarouselItem
+                width={itemWidth}
+                className={carouselItemClass}
+                key={`${id}-item-${i}`}
+                ref={item.key === activeItem ? activeItemRef : null}
+            >{item}</CarouselItem>)
+            : null;
+    };
 
     return (
         <>
@@ -33,7 +51,7 @@ const Carousel = ({
                         nextArrowContent={<div>Next</div>}
                         arrowClass={arrowClass}
                         id={id}
-                        clickHandler={carouselHandlers.slide}
+                        clickHandler={carouselHandlers.changeCounter}
                         counter={carouselState.counter}
                         availableScrollTimes={carouselState.availableScrollTimes}
                     />

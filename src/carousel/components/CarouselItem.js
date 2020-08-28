@@ -1,13 +1,16 @@
 import React from "react";
 
-const CarouselItem = ({children, className, width}) => {
-    console.log(width);
+const CarouselItem = React.forwardRef(({children, className, width}, ref) => {
     return (
-        <div style={{width: `${width}px`}} className={`item ${className ? className : ''}`}>
+        <div
+            style={{minWidth: `${width}px`}}
+            className={`item ${className ? className : ''}`}
+            ref={ref}
+        >
             {children}
         </div>
 
     )
-};
+});
 
 export default CarouselItem;

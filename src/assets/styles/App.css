@@ -10,8 +10,9 @@ body {
 
 .container {
   margin: 3rem auto;
-  border: 1px solid #C1694F;
   height: 100%;
   padding: 3rem 5rem;
   width: 70%;
+  background-color: rgba(193, 105, 79, 0.1);
 }
+
