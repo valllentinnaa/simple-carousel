@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import './index.css';
 import CarouselItem from "./components/CarouselItem";
-import useCarousel from "./hooks/useCarousel";
+import useCarouselHooks from "./hooks/useCarouselHooks";
 import CarouselArrowsContainer from "./components/CarouselArrowsContainer";
 
 const Carousel = ({
@@ -17,57 +17,64 @@ const Carousel = ({
     const carouselSlideId = `carousel-slide-${id}`;
 
     const carouselSlideRef = useRef(null);
+    const carouselContainerRef = useRef(null);
 
 
     const [activeItem, setActiveItem] = useState({});
+    const [activeItemIndex, setActiveItemIndex] = useState(0);
     const [itemsCollection, setItemsCollection] = useState([]);
     const [itemsCollectionLength, setItemsCollectionLength] = useState(0);
 
     useEffect(() => {
-        if (Object.keys(items).length) {
-            const itemsArr = Array.from(items);
-            setActiveItem(itemsArr.find(item => item.props["data-selected"]));
-            setItemsCollectionLength(itemsArr.length);
+        if (items.length) {
+            setItemsCollectionLength(items.length);
 
-            const itemsToRender = items.map((item, i) => <CarouselItem
-                width={itemWidth}
-                className={carouselItemClass}
-                key={`${id}-item-${i}`}
-            >{item}</CarouselItem>);
+            const itemsToRender = items.map((item, i) => {
+                if(item.props["data-selected"]) {
+                    setActiveItem(item);
+                    setActiveItemIndex(i);
+                }
+                return <CarouselItem
+                    width={itemWidth}
+                    className={carouselItemClass}
+                    key={`${id}-item-${i}`}
+                >{item}</CarouselItem>
+            });
             setItemsCollection(itemsToRender);
         }
     }, [items]);
 
-    const {carouselState, carouselHandlers} = useCarousel(
-        carouselSlideId,
-        id,
+    const {state, handlers} = useCarouselHooks(
         carouselSlideRef,
         itemWidth,
         activeItem,
-        itemsCollectionLength
+        activeItemIndex,
+        itemsCollectionLength,
+        carouselContainerRef
     );
+
 
     return (
         <>
             <div className={`carousel ${carouselClass}`}>
                 {
-                    (carouselState.isScrollEnabled && arrows) &&
+                    (state.isScrollEnabled && arrows) &&
                     <CarouselArrowsContainer
                         prevArrowContent={<div>Prev</div>}
                         nextArrowContent={<div>Next</div>}
                         arrowClass={arrowClass}
                         id={id}
-                        clickHandler={carouselHandlers.changeCounter}
-                        counter={carouselState.counter}
-                        availableScrollTimes={carouselState.availableScrollTimes}
+                        clickHandler={handlers.changeCounter}
+                        counter={state.counter}
+                        availableScrollTimes={state.availableScrollTimes}
                     />
                 }
-                <div className="carousel-container">
+                <div className="carousel-container" ref={carouselContainerRef}>
                     <div
                         id={carouselSlideId}
                         className="carousel-slide"
                         ref={carouselSlideRef}
-                        style={{transform: carouselState.transform}}
+                        style={{transform: state.transform}}
                     >
                             {itemsCollection}
                     </div>

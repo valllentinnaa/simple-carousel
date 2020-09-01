@@ -12,7 +12,6 @@ const CarouselArrowsContainer = ({
                                  }) => {
 
     const increase = () => {
-        console.log(counter);
         return counter++;
     };
 

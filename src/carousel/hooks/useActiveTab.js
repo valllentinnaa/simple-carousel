@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from "react";
 
-const useActiveTab = (carouselContainerRef, counter, carouselItemsRef,
-                      activeIndex) => {
+const useActiveTab = (
+    counter,
+    carouselItemsRef,
+    carouselContainerRef,
+    activeItemIndex
+) => {
     const [activeCoordinates, setActiveCoordinates] = useState({});
     const [containerCoordinates, setContainerCoordinates] = useState({});
     const [activeTabWidth, setActiveTabWidth] = useState(0);
 
     useEffect(() => {
-        console.log(carouselItemsRef.current.children);
-        if (carouselItemsRef.current.children.item(activeIndex)) {
-            setActiveCoordinates(() => getCoordinates(carouselItemsRef.current.children.item(activeIndex)));
+        if (activeItemIndex && carouselContainerRef && carouselItemsRef) {
+            setActiveCoordinates(() => getCoordinates(carouselItemsRef.current.children.item(activeItemIndex)));
             setContainerCoordinates(() => getCoordinates(carouselContainerRef.current));
-            setActiveTabWidth(carouselItemsRef.current.children.item(activeIndex).clientWidth);
         }
-    }, [counter, activeIndex]);
+    }, [counter, activeItemIndex, carouselItemsRef]);
 
 
     useEffect(() => {

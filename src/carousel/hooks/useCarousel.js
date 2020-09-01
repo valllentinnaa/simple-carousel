@@ -1,24 +1,18 @@
 import React, {useEffect, useState} from "react";
-import useActiveTab from "./useActiveTab";
 
-const useCarousel = (carouselSlideId,
-                     id,
-                     carouselSlideRef,
-                     itemWidth,
-                     activeItem,
-                     itemsCollectionLength
+const useCarousel = (
+    carouselSlideRef,
+    itemWidth,
+    itemsCollectionLength
 ) => {
     let [counter, setCounter] = useState(0);
     let [availableScrollTimes, setAvailableScrollTimes] = useState(0);
     let [visibleItemsLength, setVisibleItemsLength] = useState(0);
 
-    // Predicates
     const [isScrollEnabled, setIsScrollEnabled] = useState(false);
 
-    // CSS values
     const [transform, setTransform] = useState('');
 
-    // DOM elements
     const [containerWidth, setContainerWidth] = useState(0);
     const [itemsCollectionWidth, setItemsCollectionWidth] = useState(0);
 
@@ -29,12 +23,6 @@ const useCarousel = (carouselSlideId,
     const changeCounter = (counterValue) => {
         setCounter(counterValue);
     };
-
-    /*    const {activeTabState, activeTabHandlers} = useActiveTab(
-            carouselContainerRef,
-            counter,
-            carouselItemsRef,
-            activeItem);*/
 
     useEffect(() => {
         if (carouselSlideRef) {

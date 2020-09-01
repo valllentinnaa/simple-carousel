@@ -57,7 +57,7 @@ const Container = () => {
             }}
             key={item.name}
             className="tested"
-            data-selected={(item.name === 'ACTIVE' || item.name === 'ACTIVE2')}
+            data-selected={item.name === active}
         >{item.name}<span>{item.num}</span></button>);
         setPayload(payload);
     }, [active]);
