@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import './index.css';
 import CarouselItem from "./components/CarouselItem";
 import useCarousel from "./hooks/useCarousel";
@@ -11,35 +11,41 @@ const Carousel = ({
                       arrowClass = '',
                       arrows = true,
                       carouselItemClass = '',
-                      items,
-                      activeItem
+                      items
                   }) => {
 
     const carouselSlideId = `carousel-slide-${id}`;
 
     const carouselSlideRef = useRef(null);
-    const carouselItemsRef = useRef(null);
-    const activeItemRef = useRef(null);
+
+
+    const [activeItem, setActiveItem] = useState({});
+    const [itemsCollection, setItemsCollection] = useState([]);
+    const [itemsCollectionLength, setItemsCollectionLength] = useState(0);
+
+    useEffect(() => {
+        if (Object.keys(items).length) {
+            const itemsArr = Array.from(items);
+            setActiveItem(itemsArr.find(item => item.props["data-selected"]));
+            setItemsCollectionLength(itemsArr.length);
+
+            const itemsToRender = items.map((item, i) => <CarouselItem
+                width={itemWidth}
+                className={carouselItemClass}
+                key={`${id}-item-${i}`}
+            >{item}</CarouselItem>);
+            setItemsCollection(itemsToRender);
+        }
+    }, [items]);
 
     const {carouselState, carouselHandlers} = useCarousel(
         carouselSlideId,
         id,
         carouselSlideRef,
-        carouselItemsRef,
         itemWidth,
-        activeItemRef
+        activeItem,
+        itemsCollectionLength
     );
-
-    const renderCarouselItems = () => {
-        return items ?
-            items.map((item, i) => <CarouselItem
-                width={itemWidth}
-                className={carouselItemClass}
-                key={`${id}-item-${i}`}
-                ref={item.key === activeItem ? activeItemRef : null}
-            >{item}</CarouselItem>)
-            : null;
-    };
 
     return (
         <>
@@ -63,9 +69,7 @@ const Carousel = ({
                         ref={carouselSlideRef}
                         style={{transform: carouselState.transform}}
                     >
-                        <div ref={carouselItemsRef} className="carousel-items-container">
-                            {renderCarouselItems()}
-                        </div>
+                            {itemsCollection}
                     </div>
                 </div>
             </div>

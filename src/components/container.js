@@ -22,7 +22,7 @@ const Container = () => {
             num: '4'
         },
         {
-            name: 'test',
+            name: 'ACTIVE',
             num: '5'
         },
         {
@@ -38,7 +38,7 @@ const Container = () => {
             num: '3'
         },
         {
-            name: 'mest',
+            name: 'ACTIVE2',
             num: '4'
         },
         {
@@ -47,18 +47,20 @@ const Container = () => {
         },
     ];
     const [payload, setPayload] = useState([]);
-    const [payload1, setPayload1] = useState([]);
-
-   useEffect(() => {
-       const payload = itemsValues.map((item) => <div key={item.name}>{item.name}<span className="red">{item.num}</span></div>);
-       setPayload(payload);
-   }, []);
+    const [active, setActive] = useState('ACTIVE');
 
     useEffect(() => {
-        const payload = itemsValues.map((item) => <div key={item.name}>{item.name}<span className="red">{item.num}</span></div>);
-        setPayload1(payload);
-    }, []);
-
+        const payload = itemsValues.map((item) => <button
+            onClick={(e) => {
+                e.preventDefault();
+                setActive('ACTIVE2');
+            }}
+            key={item.name}
+            className="tested"
+            data-selected={(item.name === 'ACTIVE' || item.name === 'ACTIVE2')}
+        >{item.name}<span>{item.num}</span></button>);
+        setPayload(payload);
+    }, [active]);
 
     return (
         <>
@@ -67,17 +69,7 @@ const Container = () => {
                     id="test-container-1"
                     itemWidth={200}
                     items={payload}
-                    activeItem="jest"
-                />
-            </div>
-            <div className="test-container-2">
-                <Carousel
-                    id="test-container-1"
-                    itemWidth={200}
-                    items={payload1}
-                    arrowClass='rounded'
-                    itemsContainerClass='carousel-test-class'
-                    activeItem="lest"
+                    activeItem={active}
                 />
             </div>
         </>

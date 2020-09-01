@@ -4,9 +4,9 @@ import useActiveTab from "./useActiveTab";
 const useCarousel = (carouselSlideId,
                      id,
                      carouselSlideRef,
-                     carouselItemsRef,
                      itemWidth,
-                     activeItemRef
+                     activeItem,
+                     itemsCollectionLength
 ) => {
     let [counter, setCounter] = useState(0);
     let [availableScrollTimes, setAvailableScrollTimes] = useState(0);
@@ -20,53 +20,7 @@ const useCarousel = (carouselSlideId,
 
     // DOM elements
     const [containerWidth, setContainerWidth] = useState(0);
-    const [itemsLength, setItemsLength] = useState(0);
-    const [allItemsWidth, setAllItemsWidth] = useState(0);
-
-    const {activeTabState, activeTabHandlers} = useActiveTab(activeItemRef, containerWidth, carouselSlideRef);
-
-    useEffect(() => {
-        if (carouselSlideRef && carouselItemsRef) {
-            setContainerWidth(carouselSlideRef.current.clientWidth);
-            setItemsLength(carouselItemsRef.current.children.length);
-        }
-    }, [document.readyState]);
-
-    useEffect(() => {
-        if (itemsLength && itemWidth) setAllItemsWidth(itemsLength * itemWidth);
-    }, [itemsLength, itemWidth]);
-
-    useEffect(() => {
-        if (allItemsWidth && containerWidth) {
-            setAvailableScrollTimes(Math.round(allItemsWidth / containerWidth));
-        }
-    }, [allItemsWidth]);
-
-    useEffect(() => {
-        if (containerWidth) {
-            slide(-containerWidth * counter);
-        }
-    }, [counter]);
-
-    useEffect(() => {
-        if (containerWidth < allItemsWidth) setIsScrollEnabled(true);
-    }, [containerWidth, allItemsWidth]);
-
-    useEffect(() => {
-        if (containerWidth && itemsLength) {
-            setVisibleItemsLength(Math.round(containerWidth / itemWidth));
-        }
-    }, [containerWidth, itemsLength]);
-
-    useEffect(() => {
-        if (carouselSlideRef) {
-            setContainerWidth(carouselSlideRef.current.clientWidth);
-        }
-        //console.log('should show dropdown');
-        //console.log('in it there should be all the tabs that are not visible');
-        // Get invisible tabs
-        // How much tabs I can have visible -> Math.round(containerWidth/itemWidth)
-    }, [isScrollEnabled]);
+    const [itemsCollectionWidth, setItemsCollectionWidth] = useState(0);
 
     const slide = (value) => {
         setTransform(`translateX(${value}px)`);
@@ -75,6 +29,38 @@ const useCarousel = (carouselSlideId,
     const changeCounter = (counterValue) => {
         setCounter(counterValue);
     };
+
+    /*    const {activeTabState, activeTabHandlers} = useActiveTab(
+            carouselContainerRef,
+            counter,
+            carouselItemsRef,
+            activeItem);*/
+
+    useEffect(() => {
+        if (carouselSlideRef) {
+            setContainerWidth(carouselSlideRef.current.clientWidth);
+        }
+    }, [carouselSlideRef, isScrollEnabled]);
+
+
+    useEffect(() => {
+        if (itemsCollectionLength && itemWidth) setItemsCollectionWidth(itemsCollectionLength * itemWidth);
+    }, [itemsCollectionLength, itemWidth]);
+
+    useEffect(() => {
+        if (itemsCollectionWidth && containerWidth && itemsCollectionLength) {
+            setAvailableScrollTimes(Math.round(itemsCollectionWidth / containerWidth));
+            if (containerWidth < itemsCollectionWidth) setIsScrollEnabled(true);
+            setVisibleItemsLength(Math.round(containerWidth / itemWidth));
+        }
+    }, [itemsCollectionWidth, containerWidth, itemsCollectionLength]);
+
+
+    useEffect(() => {
+        if (containerWidth) {
+            slide(-containerWidth * counter);
+        }
+    }, [counter]);
 
     return {
         carouselState: {
